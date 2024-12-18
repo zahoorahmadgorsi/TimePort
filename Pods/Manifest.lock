@@ -1,0 +1,41 @@
+PODS:
+  - Alamofire (5.10.1)
+  - Google-Maps-iOS-Utils (6.0.0):
+    - GoogleMaps (~> 9.0)
+  - GoogleMaps (9.1.0):
+    - GoogleMaps/Maps (= 9.1.0)
+  - GoogleMaps/Base (9.1.0)
+  - GoogleMaps/Maps (9.1.0):
+    - GoogleMaps/Base
+  - GooglePlaces (9.1.0)
+  - SPIndicator (1.6.4)
+  - Toast-Swift (5.1.1)
+
+DEPENDENCIES:
+  - Alamofire
+  - Google-Maps-iOS-Utils
+  - GoogleMaps
+  - GooglePlaces
+  - SPIndicator
+  - Toast-Swift
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Google-Maps-iOS-Utils
+    - GoogleMaps
+    - GooglePlaces
+    - SPIndicator
+    - Toast-Swift
+
+SPEC CHECKSUMS:
+  Alamofire: 840d2a1ad82355b536ec6ba5f97e5bfa54600ca3
+  Google-Maps-iOS-Utils: cfe6a0239c7ca634b7e001ad059a6707143dc8dc
+  GoogleMaps: c74e02e00db0be27b165516bde753826e2652b9c
+  GooglePlaces: 00c43ad62c888354fe0bc5ce09181b2f6ce8b6d1
+  SPIndicator: 93e0a4fb23de51294ac48e874c0f081a5e293e4f
+  Toast-Swift: 7a03a532afe3a560d4044bc7c237e2864d295173
+
+PODFILE CHECKSUM: 46ab662e32801e64d124df412849a01073523f8e
+
+COCOAPODS: 1.16.2

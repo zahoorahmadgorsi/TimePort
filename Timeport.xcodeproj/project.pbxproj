@@ -1,0 +1,589 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2CC8BB985DE556472BA353A6 /* Pods_Timeport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5147A9D5056B53F83F5EB378 /* Pods_Timeport.framework */; };
+		880EDD1F2CDDE854007C4B2C /* ShowPhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880EDD1E2CDDE854007C4B2C /* ShowPhotoVC.swift */; };
+		880EDD212CDE01F3007C4B2C /* PhotoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880EDD202CDE01F3007C4B2C /* PhotoListVC.swift */; };
+		880EDD242CDE08CC007C4B2C /* PhotoListTblCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880EDD222CDE08CC007C4B2C /* PhotoListTblCell.swift */; };
+		880EDD252CDE08CC007C4B2C /* PhotoListTblCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 880EDD232CDE08CC007C4B2C /* PhotoListTblCell.xib */; };
+		BC2AEA662C8B07D4005E7E1C /* AddPhotosVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2AEA652C8B07D4005E7E1C /* AddPhotosVC.swift */; };
+		BC4B4FDE2C79B266004CFE32 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4B4FDD2C79B266004CFE32 /* AppDelegate.swift */; };
+		BC4B4FE02C79B266004CFE32 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4B4FDF2C79B266004CFE32 /* SceneDelegate.swift */; };
+		BC4B4FE22C79B266004CFE32 /* MapRouteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4B4FE12C79B266004CFE32 /* MapRouteVC.swift */; };
+		BC4B4FE52C79B266004CFE32 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BC4B4FE42C79B266004CFE32 /* Base */; };
+		BC4B4FE72C79B268004CFE32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC4B4FE62C79B268004CFE32 /* Assets.xcassets */; };
+		BC4B4FEA2C79B268004CFE32 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BC4B4FE92C79B268004CFE32 /* Base */; };
+		BC8A12B32CE1C90B00C592D2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8A12B22CE1C90300C592D2 /* Extensions.swift */; };
+		BCB2A2812C955BFB00039B94 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB2A2802C955BFB00039B94 /* Model.swift */; };
+		BCDBD3ED2C9ACA6D000212D7 /* PhotosHistoryDB.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BCDBD3EB2C9ACA6D000212D7 /* PhotosHistoryDB.xcdatamodeld */; };
+		BCEB4E542CABD43400108D50 /* CapturePhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEB4E532CABD43400108D50 /* CapturePhotoVC.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5147A9D5056B53F83F5EB378 /* Pods_Timeport.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Timeport.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EDFA05F0048E2717231EFF7 /* Pods-Timeport.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Timeport.release.xcconfig"; path = "Target Support Files/Pods-Timeport/Pods-Timeport.release.xcconfig"; sourceTree = "<group>"; };
+		880EDD1E2CDDE854007C4B2C /* ShowPhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPhotoVC.swift; sourceTree = "<group>"; };
+		880EDD202CDE01F3007C4B2C /* PhotoListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListVC.swift; sourceTree = "<group>"; };
+		880EDD222CDE08CC007C4B2C /* PhotoListTblCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListTblCell.swift; sourceTree = "<group>"; };
+		880EDD232CDE08CC007C4B2C /* PhotoListTblCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoListTblCell.xib; sourceTree = "<group>"; };
+		8819FF0CEF9E495E2FB288AA /* Pods-Timeport.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Timeport.debug.xcconfig"; path = "Target Support Files/Pods-Timeport/Pods-Timeport.debug.xcconfig"; sourceTree = "<group>"; };
+		BC2AEA652C8B07D4005E7E1C /* AddPhotosVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotosVC.swift; sourceTree = "<group>"; };
+		BC4B4FDA2C79B266004CFE32 /* Timeport.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Timeport.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC4B4FDD2C79B266004CFE32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BC4B4FDF2C79B266004CFE32 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		BC4B4FE12C79B266004CFE32 /* MapRouteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRouteVC.swift; sourceTree = "<group>"; wrapsLines = 1; };
+		BC4B4FE42C79B266004CFE32 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BC4B4FE62C79B268004CFE32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BC4B4FE92C79B268004CFE32 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BC4B4FEB2C79B268004CFE32 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC8A12B22CE1C90300C592D2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		BCB2A2802C955BFB00039B94 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		BCDBD3EC2C9ACA6D000212D7 /* PhotosHistoryDB.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PhotosHistoryDB.xcdatamodel; sourceTree = "<group>"; };
+		BCEB4E532CABD43400108D50 /* CapturePhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturePhotoVC.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BC4B4FD72C79B266004CFE32 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CC8BB985DE556472BA353A6 /* Pods_Timeport.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		85F72D7C5736B2C719CD846E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5147A9D5056B53F83F5EB378 /* Pods_Timeport.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A254F899D4528C7D8E0D6618 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8819FF0CEF9E495E2FB288AA /* Pods-Timeport.debug.xcconfig */,
+				5EDFA05F0048E2717231EFF7 /* Pods-Timeport.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		BC4B4FD12C79B266004CFE32 = {
+			isa = PBXGroup;
+			children = (
+				BC4B4FDC2C79B266004CFE32 /* Timeport */,
+				BC4B4FDB2C79B266004CFE32 /* Products */,
+				A254F899D4528C7D8E0D6618 /* Pods */,
+				85F72D7C5736B2C719CD846E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		BC4B4FDB2C79B266004CFE32 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC4B4FDA2C79B266004CFE32 /* Timeport.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BC4B4FDC2C79B266004CFE32 /* Timeport */ = {
+			isa = PBXGroup;
+			children = (
+				BC4B4FDD2C79B266004CFE32 /* AppDelegate.swift */,
+				BC4B4FDF2C79B266004CFE32 /* SceneDelegate.swift */,
+				BC4B4FEB2C79B268004CFE32 /* Info.plist */,
+				BC8A12AB2CE1BE7200C592D2 /* System */,
+			);
+			path = Timeport;
+			sourceTree = "<group>";
+		};
+		BC8A12AB2CE1BE7200C592D2 /* System */ = {
+			isa = PBXGroup;
+			children = (
+				BC8A12B12CE1C8F500C592D2 /* Helper */,
+				BC8A12B02CE1BF4000C592D2 /* Assets */,
+				BC8A12AC2CE1BEA300C592D2 /* Storyboards */,
+				BC8A12AD2CE1BEC900C592D2 /* ViewControllers */,
+				BC8A12AE2CE1BEFA00C592D2 /* Cell */,
+				BC8A12AF2CE1BF0E00C592D2 /* DataBase */,
+			);
+			path = System;
+			sourceTree = "<group>";
+		};
+		BC8A12AC2CE1BEA300C592D2 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				BC4B4FE32C79B266004CFE32 /* Main.storyboard */,
+				BC4B4FE82C79B268004CFE32 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		BC8A12AD2CE1BEC900C592D2 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				BC4B4FE12C79B266004CFE32 /* MapRouteVC.swift */,
+				880EDD202CDE01F3007C4B2C /* PhotoListVC.swift */,
+				BCEB4E532CABD43400108D50 /* CapturePhotoVC.swift */,
+				BC2AEA652C8B07D4005E7E1C /* AddPhotosVC.swift */,
+				880EDD1E2CDDE854007C4B2C /* ShowPhotoVC.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		BC8A12AE2CE1BEFA00C592D2 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				880EDD222CDE08CC007C4B2C /* PhotoListTblCell.swift */,
+				880EDD232CDE08CC007C4B2C /* PhotoListTblCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		BC8A12AF2CE1BF0E00C592D2 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				BCDBD3EB2C9ACA6D000212D7 /* PhotosHistoryDB.xcdatamodeld */,
+			);
+			path = DataBase;
+			sourceTree = "<group>";
+		};
+		BC8A12B02CE1BF4000C592D2 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				BC4B4FE62C79B268004CFE32 /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		BC8A12B12CE1C8F500C592D2 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				BCB2A2802C955BFB00039B94 /* Model.swift */,
+				BC8A12B22CE1C90300C592D2 /* Extensions.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BC4B4FD92C79B266004CFE32 /* Timeport */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC4B4FEE2C79B268004CFE32 /* Build configuration list for PBXNativeTarget "Timeport" */;
+			buildPhases = (
+				845875FB70059660E6CAB08A /* [CP] Check Pods Manifest.lock */,
+				BC4B4FD62C79B266004CFE32 /* Sources */,
+				BC4B4FD72C79B266004CFE32 /* Frameworks */,
+				BC4B4FD82C79B266004CFE32 /* Resources */,
+				6352FF165CF6A846175B6835 /* [CP] Embed Pods Frameworks */,
+				0D298AF97CE05BEF3C4696C9 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Timeport;
+			productName = GoogleMapDemo;
+			productReference = BC4B4FDA2C79B266004CFE32 /* Timeport.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BC4B4FD22C79B266004CFE32 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					BC4B4FD92C79B266004CFE32 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+				};
+			};
+			buildConfigurationList = BC4B4FD52C79B266004CFE32 /* Build configuration list for PBXProject "Timeport" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BC4B4FD12C79B266004CFE32;
+			productRefGroup = BC4B4FDB2C79B266004CFE32 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BC4B4FD92C79B266004CFE32 /* Timeport */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BC4B4FD82C79B266004CFE32 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC4B4FE72C79B268004CFE32 /* Assets.xcassets in Resources */,
+				880EDD252CDE08CC007C4B2C /* PhotoListTblCell.xib in Resources */,
+				BC4B4FEA2C79B268004CFE32 /* Base in Resources */,
+				BC4B4FE52C79B266004CFE32 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0D298AF97CE05BEF3C4696C9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Timeport/Pods-Timeport-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Timeport/Pods-Timeport-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Timeport/Pods-Timeport-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6352FF165CF6A846175B6835 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Timeport/Pods-Timeport-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Timeport/Pods-Timeport-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Timeport/Pods-Timeport-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		845875FB70059660E6CAB08A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Timeport-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BC4B4FD62C79B266004CFE32 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC8A12B32CE1C90B00C592D2 /* Extensions.swift in Sources */,
+				880EDD1F2CDDE854007C4B2C /* ShowPhotoVC.swift in Sources */,
+				BCDBD3ED2C9ACA6D000212D7 /* PhotosHistoryDB.xcdatamodeld in Sources */,
+				880EDD212CDE01F3007C4B2C /* PhotoListVC.swift in Sources */,
+				BC2AEA662C8B07D4005E7E1C /* AddPhotosVC.swift in Sources */,
+				BC4B4FE22C79B266004CFE32 /* MapRouteVC.swift in Sources */,
+				BC4B4FDE2C79B266004CFE32 /* AppDelegate.swift in Sources */,
+				BC4B4FE02C79B266004CFE32 /* SceneDelegate.swift in Sources */,
+				880EDD242CDE08CC007C4B2C /* PhotoListTblCell.swift in Sources */,
+				BCB2A2812C955BFB00039B94 /* Model.swift in Sources */,
+				BCEB4E542CABD43400108D50 /* CapturePhotoVC.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		BC4B4FE32C79B266004CFE32 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC4B4FE42C79B266004CFE32 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		BC4B4FE82C79B268004CFE32 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC4B4FE92C79B268004CFE32 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BC4B4FEC2C79B268004CFE32 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BC4B4FED2C79B268004CFE32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BC4B4FEF2C79B268004CFE32 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8819FF0CEF9E495E2FB288AA /* Pods-Timeport.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = 445B9A8663;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Timeport/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Timeport POC";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please Allow";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to show it on the map";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to show it on the map";
+				INFOPLIST_KEY_NSLocationUsageDescription = "We need your location to show it on the map";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show it on the map";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please Allow";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timeport.remyndr.zahoor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BC4B4FF02C79B268004CFE32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5EDFA05F0048E2717231EFF7 /* Pods-Timeport.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = 445B9A8663;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Timeport/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Timeport POC";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please Allow";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to show it on the map";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to show it on the map";
+				INFOPLIST_KEY_NSLocationUsageDescription = "We need your location to show it on the map";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show it on the map";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please Allow";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timeport.remyndr.zahoor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BC4B4FD52C79B266004CFE32 /* Build configuration list for PBXProject "Timeport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC4B4FEC2C79B268004CFE32 /* Debug */,
+				BC4B4FED2C79B268004CFE32 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC4B4FEE2C79B268004CFE32 /* Build configuration list for PBXNativeTarget "Timeport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC4B4FEF2C79B268004CFE32 /* Debug */,
+				BC4B4FF02C79B268004CFE32 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		BCDBD3EB2C9ACA6D000212D7 /* PhotosHistoryDB.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BCDBD3EC2C9ACA6D000212D7 /* PhotosHistoryDB.xcdatamodel */,
+			);
+			currentVersion = BCDBD3EC2C9ACA6D000212D7 /* PhotosHistoryDB.xcdatamodel */;
+			path = PhotosHistoryDB.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = BC4B4FD22C79B266004CFE32 /* Project object */;
+}
