@@ -375,6 +375,7 @@ extension CapturePhotoVC: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+//        print("magneticHeading: \(newHeading.magneticHeading), trueHeading: \(newHeading.trueHeading), headingAccuracy: \(newHeading.headingAccuracy)")
         if newHeading.headingAccuracy < 0 {
             currentHeading = newHeading.magneticHeading
         } else {

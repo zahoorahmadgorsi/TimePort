@@ -38,11 +38,12 @@ class MapRouteVC: UIViewController {
     var selectedLocationLongitude: Double?
     var selectedOldPhoto: UIImage?
     var selectedHeading: Double?
-    var selectedtiltPitch: Double?
+    var selectedTiltPitch: Double?
     var selectedImageName: String?
     var selectedImageDesc: String?
-    var selectedRoll: Double?
-    var currentHeading: CLLocationDirection?
+    var selectedTiltRoll: Double?
+    var selectedTiltYaw: Double?
+    var currentHeading: CLLocationDirection = 0.0
     
     var lastBorderColor: UIColor? = nil
     var lastVisibilityState: Bool? = nil
@@ -56,7 +57,8 @@ class MapRouteVC: UIViewController {
     var storedTexture: TextureResource?
     
     var shouldShowFrame = false
-
+    var anchorEntity = AnchorEntity(world: [0,0,-0.8])
+    
     //MARK: -  Override Mehods
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -176,6 +178,7 @@ extension MapRouteVC {
     func setupLocationManager() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
+        locationManager.headingFilter = 1
         locationManager.requestWhenInUseAuthorization()
         
         locationManager.startUpdatingLocation()
@@ -260,8 +263,9 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
             selectedLocationIMG.image = UIImage(data: photoData.photoData!)
             selectedOldPhoto = UIImage(data: photoData.photoData!)
             selectedHeading = photoData.heading
-            selectedtiltPitch = photoData.tiltPitch
-            selectedRoll = photoData.tiltRoll
+            selectedTiltPitch = photoData.tiltPitch
+            selectedTiltRoll = photoData.tiltRoll
+            selectedTiltYaw = photoData.tiltYaw
             selectedImageName = photoData.imageName
             selectedImageDesc = photoData.imageDesc
             let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(photoData.locationLatitude),\(photoData.locationLongitude)&radius=100&key=AIzaSyDu__0AxD6-yUvUlT9ytQjyw0K4g5d8h70"
@@ -282,23 +286,29 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
         } else {
             currentMarker.position = currentCoordinate
         }
+//        print("current location: \(location)")
         let distance = location.distance(from: CLLocation(latitude: selectedLocationLattitde ?? 0, longitude: selectedLocationLongitude ?? 0))
-        print("distance:\(distance)")
-        if distance <= 10 {
+        if distance <= 15 {
+            print("Entering viewfinder mode, distance:\(distance)")
             enterViewfinderMode()
         } else {
             exitViewfinderMode()
+            print("Exiting viewfinder mode, showing map view. distance:\(distance)")
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        print("newHeading: \(newHeading.trueHeading)", "selectedHeading:\(selectedHeading ?? 0)")
+//        print("newHeading: \(newHeading.trueHeading), selectedHeading:\(selectedHeading ?? 0)")
         let headingDifference = abs(newHeading.trueHeading - (selectedHeading ?? 0))
-        currentHeading = newHeading.trueHeading
-        //zahoor started
-        //shouldShowFrame = headingDifference < 15 || headingDifference > 345
-        shouldShowFrame = headingDifference < 15
-        //zahoor ended
+        
+        if newHeading.headingAccuracy < 0 {
+            currentHeading = newHeading.magneticHeading
+        } else {
+            currentHeading = newHeading.trueHeading
+        }
+        
+//        currentHeading = newHeading.trueHeading // True North
+        shouldShowFrame = headingDifference < 15 || headingDifference > 345
         if (shouldShowFrame){
             print("Phone is pointing to the desired direction/heading!","shouldShowFrame:\(shouldShowFrame)")
         }
@@ -314,7 +324,6 @@ extension MapRouteVC {
         arView.automaticallyConfigureSession = false
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = [.horizontal, .vertical]
-
         arView.session.run(config)
         arView.session.delegate = self
         mapBGView.addSubview(arView)
@@ -326,11 +335,11 @@ extension MapRouteVC {
         ])
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         arView.addGestureRecognizer(tapGestureRecognizer)
+        
         setupBorderEntity()
         showOldPhoto()
     }
-    
-    
+        
     func setupBorderEntity() {
         guard let image = selectedOldPhoto else {
             print("No old photo to set borders")
@@ -390,12 +399,99 @@ extension MapRouteVC {
         borderEntity?.addChild(rightBorderBack)
         
         let borderPosition = SIMD3<Float>(0, 0, -0.8)
-        let anchorEntity = AnchorEntity(world: borderPosition)
+        //let anchorEntity = AnchorEntity(world: borderPosition)
+        anchorEntity = AnchorEntity(world: borderPosition)
         anchorEntity.addChild(borderEntity!)
         arView.scene.addAnchor(anchorEntity)
+        
 //        print("Borders set with dimensions: \(borderWidth) x \(borderHeight)")
-    }
+        //zahoor started
+        //Moving to the direction of the photo
+        let newPosition = createSIMD3Position(heading: self.selectedHeading ?? 90.0 // Facing East
+                                              , pitch: self.selectedTiltPitch ?? 10.0  // 10 degrees upward tilt
+                                              , roll: self.selectedTiltRoll ??  0.0    // No left/right tilt
+//                                              , yaw: self.selectedTiltYaw ?? 90.0    // Aligns with heading
+                                            )
 
+        print("newPosition: \(newPosition)")
+        var transform = anchorEntity.transform
+        transform.translation = newPosition
+        // Animate over 2 seconds
+        anchorEntity.move(to: transform, relativeTo: nil, duration: 2.0, timingFunction: .easeInOut)
+        
+    }
+    
+    /// Converts heading, pitch, roll, and yaw into a SIMD3 position
+    /// - Parameters:
+    ///   - heading: CLLocationDirection (degrees from true North)
+    ///   - pitch: Tilt pitch angle in degrees (up/down)
+    ///   - roll: Tilt roll angle in degrees (left/right)
+    ///   - yaw: Tilt yaw angle in degrees
+    ///   - distance: Distance (magnitude) from the origin
+    /// - Returns: SIMD3<Float> position
+//    func createSIMD3Position(heading: CLLocationDirection,
+//                             pitch: Double,
+//                             roll: Double,
+//                             yaw: Double,
+//                             distance: Float = 1.0) -> SIMD3<Float> {
+//        
+//        // Convert angles from degrees to radians
+//        let headingRad = Float(heading * .pi / 180.0)
+//        let pitchRad = Float(pitch * .pi / 180.0)
+//        let rollRad = Float(roll * .pi / 180.0)
+//        let yawRad = Float(yaw * .pi / 180.0)
+//        
+//        // Calculate position using trigonometric functions
+//        let x = distance * cos(pitchRad) * sin(headingRad)
+//        let y = distance * sin(pitchRad) * cos(rollRad)
+//        let z = -distance * cos(pitchRad) * cos(headingRad)
+//        
+//        return SIMD3<Float>(x, y, z)
+//    }
+
+    func createSIMD3Position(heading: CLLocationDirection, pitch: Double, roll: Double) -> SIMD3<Float> {
+        // Convert degrees to radians
+        let yawRadians = Float(heading) * .pi / 180.0   // Heading (Yaw)
+        let pitchRadians = Float(pitch) * .pi / 180.0  // Tilt Up/Down
+        let rollRadians = Float(roll) * .pi / 180.0    // Tilt Left/Right
+
+        // Distance to position the point (change as needed)
+        let distance: Float = 1.0
+        
+        // Calculate the 3D position using spherical coordinates
+        let x = distance * cos(pitchRadians) * sin(yawRadians)
+        let y = distance * sin(pitchRadians)
+        let z = -distance * cos(pitchRadians) * cos(yawRadians) // Negative Z is forward
+        
+        print("SIMD3 Position: x: \(x), y: \(y), z: \(z)")
+        return SIMD3<Float>(x, y, z)
+    }
+    
+    //zahoor ended
+    
+    func showOldPhoto() {
+        guard let image = selectedLocationIMG.image else {
+            print("No old photo to display")
+            return
+        }
+        let correctedImage = image.fixedOrientation()
+        let aspectRatio = correctedImage.size.width / correctedImage.size.height
+        let photoPlaneWidth: Float = 0.7
+        let photoPlaneHeight: Float = photoPlaneWidth / Float(aspectRatio)
+        do {
+            storedTexture = try TextureResource.generate(from: correctedImage.cgImage!, options: .init(semantic: .none))
+        } catch {
+            print("Error generating texture: \(error)")
+            return
+        }
+        var photoMaterial = SimpleMaterial(color: .white, roughness: 0.5, isMetallic: false)
+        photoMaterial.baseColor = .texture(storedTexture!)
+        photoEntity = ModelEntity(mesh: MeshResource.generatePlane(width: photoPlaneWidth, height: photoPlaneHeight), materials: [photoMaterial])
+        photoEntity?.transform.rotation = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 0, 1))
+        photoEntity?.position = SIMD3<Float>(0, 0, 0)
+        borderEntity?.addChild(photoEntity!)
+        print("Photo entity added with size: \(photoPlaneWidth) x \(photoPlaneHeight)")
+    }
     
     func enterViewfinderMode() {
         if selectedOldPhoto == nil || arView == nil{
@@ -408,7 +504,6 @@ extension MapRouteVC {
             UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
             UIViewController.attemptRotationToDeviceOrientation()
             borderEntity?.isEnabled = true
-            print("Entering viewfinder mode.")
         }
     }
     
@@ -424,7 +519,6 @@ extension MapRouteVC {
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
             UIViewController.attemptRotationToDeviceOrientation()
             borderEntity?.isEnabled = false
-            print("Exiting viewfinder mode, showing map view.")
         }
     }
     
@@ -488,29 +582,7 @@ extension MapRouteVC {
         }
     }
     
-    func showOldPhoto() {
-        guard let image = selectedLocationIMG.image else {
-            print("No old photo to display")
-            return
-        }
-        let correctedImage = image.fixedOrientation()
-        let aspectRatio = correctedImage.size.width / correctedImage.size.height
-        let photoPlaneWidth: Float = 0.7
-        let photoPlaneHeight: Float = photoPlaneWidth / Float(aspectRatio)
-        do {
-            storedTexture = try TextureResource.generate(from: correctedImage.cgImage!, options: .init(semantic: .none))
-        } catch {
-            print("Error generating texture: \(error)")
-            return
-        }
-        var photoMaterial = SimpleMaterial(color: .white, roughness: 0.5, isMetallic: false)
-        photoMaterial.baseColor = .texture(storedTexture!)
-        photoEntity = ModelEntity(mesh: MeshResource.generatePlane(width: photoPlaneWidth, height: photoPlaneHeight), materials: [photoMaterial])
-        photoEntity?.transform.rotation = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 0, 1))
-        photoEntity?.position = SIMD3<Float>(0, 0, 0)
-        borderEntity?.addChild(photoEntity!)
-        print("Photo entity added with size: \(photoPlaneWidth) x \(photoPlaneHeight)")
-    }
+
     
     func testPhotoDisplay() {
         guard let image = selectedLocationIMG.image else { return }
