@@ -11,6 +11,7 @@ import CoreLocation
 import ARKit
 import CoreData
 import RealityKit
+import CoreMotion
 
 class MapRouteVC: UIViewController {
     
@@ -23,7 +24,9 @@ class MapRouteVC: UIViewController {
     
     //MARK: - Variables
     var mapView: GMSMapView!
-    var locationManager: CLLocationManager!
+//    var locationManager: CLLocationManager!
+    var locationManager = CLLocationManager()
+    var motionManager = CMMotionManager()
     var destinationMarker: GMSMarker!
     var currentMarker: GMSMarker!
     var arView: ARView!
@@ -183,6 +186,12 @@ extension MapRouteVC {
         
         locationManager.startUpdatingLocation()
         locationManager.startUpdatingHeading()
+        
+//        motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
+//        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] (motion, error) in
+//            guard let self = self, let motion = motion else { return }
+//            self.updateARObject(using: motion.attitude)
+//        }
         self.setupMapView()
     }
     
@@ -286,9 +295,9 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
         } else {
             currentMarker.position = currentCoordinate
         }
-//        print("current location: \(location)")
+        print("current location: \(location)")
         let distance = location.distance(from: CLLocation(latitude: selectedLocationLattitde ?? 0, longitude: selectedLocationLongitude ?? 0))
-        if distance <= 15 {
+        if distance <= 10 {
             print("Entering viewfinder mode, distance:\(distance)")
             enterViewfinderMode()
         } else {
@@ -318,6 +327,7 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
 
 //MARK: - Other Methods
 extension MapRouteVC {
+    
     func setupARView() {
         arView = ARView(frame: .zero)
         arView.translatesAutoresizingMaskIntoConstraints = false
@@ -403,51 +413,23 @@ extension MapRouteVC {
         anchorEntity = AnchorEntity(world: borderPosition)
         anchorEntity.addChild(borderEntity!)
         arView.scene.addAnchor(anchorEntity)
+
         
 //        print("Borders set with dimensions: \(borderWidth) x \(borderHeight)")
         //zahoor started
         //Moving to the direction of the photo
-        let newPosition = createSIMD3Position(heading: self.selectedHeading ?? 90.0 // Facing East
-                                              , pitch: self.selectedTiltPitch ?? 10.0  // 10 degrees upward tilt
-                                              , roll: self.selectedTiltRoll ??  0.0    // No left/right tilt
-//                                              , yaw: self.selectedTiltYaw ?? 90.0    // Aligns with heading
-                                            )
-
-        print("newPosition: \(newPosition)")
-        var transform = anchorEntity.transform
-        transform.translation = newPosition
-        // Animate over 2 seconds
-        anchorEntity.move(to: transform, relativeTo: nil, duration: 2.0, timingFunction: .easeInOut)
-        
+//        let newPosition = createSIMD3Position(heading: self.selectedHeading ?? 90.0 // Facing East
+//                                              , pitch: self.selectedTiltPitch ?? 10.0  // 10 degrees upward tilt
+//                                              , roll: self.selectedTiltRoll ??  0.0    // No left/right tilt
+////                                              , yaw: self.selectedTiltYaw ?? 90.0    // Aligns with heading
+//                                            )
+//        let newPosition = SIMD3<Float>(0.5, 0, -0.8)
+//        print("newPosition: \(newPosition)")
+//        var transform = anchorEntity.transform
+//        transform.translation = newPosition
+//        // Animate over 2 seconds
+//        anchorEntity.move(to: transform, relativeTo: nil, duration: 2.0, timingFunction: .easeInOut)
     }
-    
-    /// Converts heading, pitch, roll, and yaw into a SIMD3 position
-    /// - Parameters:
-    ///   - heading: CLLocationDirection (degrees from true North)
-    ///   - pitch: Tilt pitch angle in degrees (up/down)
-    ///   - roll: Tilt roll angle in degrees (left/right)
-    ///   - yaw: Tilt yaw angle in degrees
-    ///   - distance: Distance (magnitude) from the origin
-    /// - Returns: SIMD3<Float> position
-//    func createSIMD3Position(heading: CLLocationDirection,
-//                             pitch: Double,
-//                             roll: Double,
-//                             yaw: Double,
-//                             distance: Float = 1.0) -> SIMD3<Float> {
-//        
-//        // Convert angles from degrees to radians
-//        let headingRad = Float(heading * .pi / 180.0)
-//        let pitchRad = Float(pitch * .pi / 180.0)
-//        let rollRad = Float(roll * .pi / 180.0)
-//        let yawRad = Float(yaw * .pi / 180.0)
-//        
-//        // Calculate position using trigonometric functions
-//        let x = distance * cos(pitchRad) * sin(headingRad)
-//        let y = distance * sin(pitchRad) * cos(rollRad)
-//        let z = -distance * cos(pitchRad) * cos(headingRad)
-//        
-//        return SIMD3<Float>(x, y, z)
-//    }
 
     func createSIMD3Position(heading: CLLocationDirection, pitch: Double, roll: Double) -> SIMD3<Float> {
         // Convert degrees to radians
@@ -817,5 +799,16 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return normalizedImage ?? self
+    }
+}
+
+extension simd_float4x4 {
+    init(_ cmRotationMatrix: CMRotationMatrix) {
+        self.init(columns: (
+            SIMD4(Float(cmRotationMatrix.m11), Float(cmRotationMatrix.m12), Float(cmRotationMatrix.m13), 0),
+            SIMD4(Float(cmRotationMatrix.m21), Float(cmRotationMatrix.m22), Float(cmRotationMatrix.m23), 0),
+            SIMD4(Float(cmRotationMatrix.m31), Float(cmRotationMatrix.m32), Float(cmRotationMatrix.m33), 0),
+            SIMD4(0, 0, 0, 1)
+        ))
     }
 }

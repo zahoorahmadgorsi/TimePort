@@ -135,7 +135,7 @@ class CapturePhotoVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     func setupMotionManager() {
         motionManager = CMMotionManager()
         if motionManager.isDeviceMotionAvailable {
-            motionManager.deviceMotionUpdateInterval = 0.1
+            motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
             motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { (motion, error) in
                 if let motion = motion {
                     let newTilt = (pitch: motion.attitude.pitch * (180 / .pi),
