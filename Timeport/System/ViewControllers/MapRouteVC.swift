@@ -393,7 +393,7 @@ extension MapRouteVC {
         let anchorEntity = AnchorEntity(world: borderPosition)
         anchorEntity.addChild(borderEntity!)
         arView.scene.addAnchor(anchorEntity)
-        print("Borders set with dimensions: \(borderWidth) x \(borderHeight)")
+//        print("Borders set with dimensions: \(borderWidth) x \(borderHeight)")
     }
 
     
