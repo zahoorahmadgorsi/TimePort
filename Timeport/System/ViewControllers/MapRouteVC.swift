@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  GoogleMapDemo
 //
-//  Created by ViPrak-Rohit on 24/08/24.
+//  Created by Zahoor Ahmad Gorsi on 24/08/24.
 //
 
 import UIKit
@@ -11,6 +11,7 @@ import CoreLocation
 import ARKit
 import CoreData
 import RealityKit
+import CoreMotion
 
 class MapRouteVC: UIViewController {
     
@@ -38,10 +39,10 @@ class MapRouteVC: UIViewController {
     var selectedLocationLongitude: Double?
     var selectedOldPhoto: UIImage?
     var selectedHeading: Double?
-    var selectedtiltPitch: Double?
+    
     var selectedImageName: String?
     var selectedImageDesc: String?
-    var selectedRoll: Double?
+    
     var currentHeading: CLLocationDirection?
     
     var lastBorderColor: UIColor? = nil
@@ -56,7 +57,18 @@ class MapRouteVC: UIViewController {
     var storedTexture: TextureResource?
     
     var shouldShowFrame = false
-
+    //zahoor started
+    var selectedTiltPitch: Double?
+    var selectedTiltRoll: Double?
+    var currentTiltPitch: Double?             // Radians
+    var currentTiltRoll: Double?              // Radians
+    var currentTiltYaw: Double?
+    var motionManager = CMMotionManager()
+    let tolerance: CGFloat = 0.5                 // Allowable deviation for pitch and roll
+    let headingTolerance: CLLocationDirection = 5.0 // Degrees
+    var hasResetOnce = false
+    //zahoor ended
+    
     //MARK: -  Override Mehods
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -181,6 +193,50 @@ extension MapRouteVC {
         locationManager.startUpdatingLocation()
         locationManager.startUpdatingHeading()
         self.setupMapView()
+        //zahoor started
+        motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
+        motionManager.startDeviceMotionUpdates(to: .main) { [weak arView] (motion, error) in
+            guard let motion = motion else { return }
+            
+            self.currentTiltPitch = motion.attitude.pitch * (180 / .pi)
+            self.currentTiltRoll = motion.attitude.roll * (180 / .pi)
+            self.currentTiltYaw = motion.attitude.yaw * (180 / .pi)
+                
+            // Check if heading and tilt match
+            if let _selectedHeading = self.selectedHeading
+                , let _selectedTiltPitch = self.selectedTiltPitch
+                , let _selectedTiltRoll = self.selectedTiltRoll
+                , let _currentHeading = self.currentHeading
+                , let _currentTiltPitch = self.currentTiltPitch
+                , let _currentTiltRoll = self.currentTiltRoll{
+                
+                print("currentHeading: \(_currentHeading), selectedHeading:\(_selectedHeading)")
+                print("currentTiltPitch: \(_currentTiltPitch), selectedTiltPitch:\(_selectedTiltPitch)")
+                print("currentTiltRoll: \(_currentTiltRoll), selectedTiltPitch:\(_selectedTiltRoll)")
+                //print("currentTiltYaw: \(_currentTiltYaw), selectedTiltPitch:\(_selectedTiltYaw)")
+                print(abs(_currentHeading - _selectedHeading) <= self.headingTolerance
+                      , abs(_currentTiltPitch - _selectedTiltPitch) <= self.tolerance
+                      , abs(_currentTiltRoll - _selectedTiltRoll) <= self.tolerance
+                )
+                if abs(_currentHeading - _selectedHeading) <= self.headingTolerance
+                   ,(abs(_currentTiltPitch - _selectedTiltPitch) <= self.tolerance ||
+                   abs(_currentTiltRoll - _selectedTiltRoll) <= self.tolerance )
+                {
+                    print("Allah Ho Akbar")
+                    //if arView has already been reset once meaning now rectanlge is drawn at right position
+                    if !self.hasResetOnce{
+                        self.motionManager.stopDeviceMotionUpdates()
+                        DispatchQueue.main.async {
+                            self.resetARView()
+                            self.setupARView()
+                            self.setupBorderEntity()
+                            self.showOldPhoto()
+                        }
+                    }
+                }
+            }
+        }
+        //zahoor finished
     }
     
     func setupMultipleMarkers() {
@@ -260,8 +316,10 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
             selectedLocationIMG.image = UIImage(data: photoData.photoData!)
             selectedOldPhoto = UIImage(data: photoData.photoData!)
             selectedHeading = photoData.heading
-            selectedtiltPitch = photoData.tiltPitch
-            selectedRoll = photoData.tiltRoll
+            //zahoor started
+            selectedTiltPitch = photoData.tiltPitch
+            selectedTiltRoll = photoData.tiltRoll
+            //zahoor ended
             selectedImageName = photoData.imageName
             selectedImageDesc = photoData.imageDesc
             let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(photoData.locationLatitude),\(photoData.locationLongitude)&radius=100&key=AIzaSyDu__0AxD6-yUvUlT9ytQjyw0K4g5d8h70"
@@ -295,10 +353,7 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
         print("newHeading: \(newHeading.trueHeading)", "selectedHeading:\(selectedHeading ?? 0)")
         let headingDifference = abs(newHeading.trueHeading - (selectedHeading ?? 0))
         currentHeading = newHeading.trueHeading
-        //zahoor started
-        //shouldShowFrame = headingDifference < 15 || headingDifference > 345
-        shouldShowFrame = headingDifference < 15
-        //zahoor ended
+        shouldShowFrame = headingDifference < 15 || headingDifference > 345
         if (shouldShowFrame){
             print("Phone is pointing to the desired direction/heading!","shouldShowFrame:\(shouldShowFrame)")
         }
@@ -308,6 +363,31 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
 
 //MARK: - Other Methods
 extension MapRouteVC {
+    
+    //zahoor started
+    func resetARView() {
+        // Pause the current session
+        self.arView.session.pause()
+        
+        // Remove all anchors
+        self.arView.scene.anchors.removeAll()
+        
+        // Create a new ARWorldTrackingConfiguration
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.horizontal, .vertical]
+        
+        // Optional: Reset tracking and remove existing anchors
+        configuration.isCollaborationEnabled = false // Adjust if collaboration is used
+        self.arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        
+        print("ARView reset successfully.")
+        
+        //removing arView from the mapBGView
+        self.arView.removeFromSuperview()
+        hasResetOnce = true
+    }
+    //zahoor finished
+    
     func setupARView() {
         arView = ARView(frame: .zero)
         arView.translatesAutoresizingMaskIntoConstraints = false
@@ -326,7 +406,6 @@ extension MapRouteVC {
         ])
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         arView.addGestureRecognizer(tapGestureRecognizer)
-        
         //zahoor started
 //        setupBorderEntity()
 //        showOldPhoto()

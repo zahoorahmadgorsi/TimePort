@@ -2,7 +2,7 @@
 //  CapturePhotoVC.swift
 //  Timeport
 //
-//  Created by ViPrak-Rohit on 01/10/24.
+//  Created by Zahoor Ahmad Gorsi on 01/10/24.
 //
 
 import UIKit
@@ -331,19 +331,14 @@ class CapturePhotoVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         guard let coordinate = self.coordinateAtDone,
               let heading = self.headingAtDone,
               let tilt = self.tiltAtDone else { return }
-
-        savePhotoData(coordinate: coordinate, heading: heading, tilt: tilt)
-
         //zahoor ended
+        savePhotoData(coordinate: coordinate, heading: heading, tilt: tilt)
     }
     
     func savePhotoData(coordinate: CLLocationCoordinate2D, heading: CLLocationDirection, tilt: (pitch: Double, roll: Double, yaw: Double)) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
-        //zahoor started
-        //let normalizedHeading = (heading >= 0 && heading <= 360) ? heading : fmod(heading + 360, 360)
-        let normalizedHeading = heading
-        //zahoor ended
+        let normalizedHeading = (heading >= 0 && heading <= 360) ? heading : fmod(heading + 360, 360)
         guard let capturedPhoto = self.capturedPhoto else { return }
         context.perform {
             let photoEntity = PhotoEntity(context: context)
