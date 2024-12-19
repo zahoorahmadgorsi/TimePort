@@ -22,7 +22,10 @@ class CapturePhotoVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     var locationManager: CLLocationManager!
     var motionManager: CMMotionManager!
     var currentLocation: CLLocationCoordinate2D?
-    var currentHeading: CLLocationDirection?
+    //zahoor started
+//    var currentHeading: CLLocationDirection?
+    var currentHeading: Double?
+    //zahoor ended
     var currentTilt: (pitch: Double, roll: Double, yaw: Double)?
     var capturedPhoto: UIImage?
     var previousTilt: (pitch: Double, roll: Double, yaw: Double)?

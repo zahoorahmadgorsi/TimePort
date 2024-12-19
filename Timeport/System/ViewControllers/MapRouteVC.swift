@@ -40,10 +40,11 @@ class MapRouteVC: UIViewController {
     var selectedLocationLattitde: Double?
     var selectedLocationLongitude: Double?
     var selectedOldPhoto: UIImage?
+    var selectedHeading: Double?
+
     var selectedImageName: String?
     var selectedImageDesc: String?
     
-    var selectedHeading: Double?
     var selectedTiltPitch: Double?
     var selectedTiltRoll: Double?
     var selectedTiltYaw: Double?
@@ -68,7 +69,7 @@ class MapRouteVC: UIViewController {
     var anchorEntity = AnchorEntity(world: [0,0,-0.8])
     let tolerance: CGFloat = 0.5                 // Allowable deviation for pitch and roll
     let headingTolerance: CLLocationDirection = 5.0 // Degrees
-    var hasResetOnce = false
+//    var hasResetOnce = false
     
     //MARK: -  Override Mehods
     override func viewWillAppear(_ animated: Bool) {
@@ -226,7 +227,7 @@ extension MapRouteVC {
                 {
                     print("Allah Ho Akbar")
                     //if arView has already been reset once meaning now rectanlge is drawn at right position
-                    if !self.hasResetOnce{
+//                    if !self.hasResetOnce{
                         DispatchQueue.main.async {
                             self.resetARView()
                             self.setupARView()
@@ -234,7 +235,7 @@ extension MapRouteVC {
                             self.showOldPhoto()
                             self.motionManager.stopDeviceMotionUpdates()
                         }
-                    }
+//                    }
                 }
             }
         }
@@ -375,12 +376,11 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
         } else {
             self.currentHeading = newHeading.trueHeading
         }
-        
-//        currentHeading = newHeading.trueHeading // True North
+
         shouldShowFrame = headingDifference < 15 || headingDifference > 345
-        if (shouldShowFrame){
-            print("Phone is pointing to the desired direction/heading!","shouldShowFrame:\(shouldShowFrame)")
-        }
+//        if (shouldShowFrame){
+//            print("Phone is pointing to the desired direction/heading!","shouldShowFrame:\(shouldShowFrame)")
+//        }
         updateBorderColorBasedOnVisibility()
     }
 }
@@ -408,7 +408,7 @@ extension MapRouteVC {
         
         //removing arView from the mapBGView
         self.arView.removeFromSuperview()
-        hasResetOnce = true
+//        hasResetOnce = true
     }
     //zahoor finished
     
