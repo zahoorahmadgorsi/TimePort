@@ -326,8 +326,11 @@ extension MapRouteVC {
         ])
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         arView.addGestureRecognizer(tapGestureRecognizer)
-        setupBorderEntity()
-        showOldPhoto()
+        
+        //zahoor started
+//        setupBorderEntity()
+//        showOldPhoto()
+        //zahoor finished
     }
     
     
