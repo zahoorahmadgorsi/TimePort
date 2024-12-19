@@ -40,13 +40,18 @@ class MapRouteVC: UIViewController {
     var selectedLocationLattitde: Double?
     var selectedLocationLongitude: Double?
     var selectedOldPhoto: UIImage?
-    var selectedHeading: Double?
-    var selectedTiltPitch: Double?
     var selectedImageName: String?
     var selectedImageDesc: String?
+    
+    var selectedHeading: Double?
+    var selectedTiltPitch: Double?
     var selectedTiltRoll: Double?
     var selectedTiltYaw: Double?
-    var currentHeading: CLLocationDirection = 0.0
+    
+    var currentHeading: Double?  // Degrees    //updating in didUpdateHeading
+    var currentTiltPitch: Double?             // Radians
+    var currentTiltRoll: Double?              // Radians
+    var currentTiltYaw: Double?
     
     var lastBorderColor: UIColor? = nil
     var lastVisibilityState: Bool? = nil
@@ -61,6 +66,9 @@ class MapRouteVC: UIViewController {
     
     var shouldShowFrame = false
     var anchorEntity = AnchorEntity(world: [0,0,-0.8])
+    let tolerance: CGFloat = 0.5                 // Allowable deviation for pitch and roll
+    let headingTolerance: CLLocationDirection = 5.0 // Degrees
+    var hasResetOnce = false
     
     //MARK: -  Override Mehods
     override func viewWillAppear(_ animated: Bool) {
@@ -75,7 +83,7 @@ class MapRouteVC: UIViewController {
             present(alert, animated: true)
         }
         DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.setupLocationManager()
+            self.setupLocationAndMotionManager()
             self.setupMultipleMarkers()
             if let mapview = self.mapView {
                 self.mapView.delegate = self
@@ -178,7 +186,7 @@ extension MapRouteVC {
         destinationMarker.map = mapView
     }
     
-    func setupLocationManager() {
+    func setupLocationAndMotionManager() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.headingFilter = 1
@@ -187,12 +195,64 @@ extension MapRouteVC {
         locationManager.startUpdatingLocation()
         locationManager.startUpdatingHeading()
         
-//        motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
-//        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] (motion, error) in
-//            guard let self = self, let motion = motion else { return }
-//            self.updateARObject(using: motion.attitude)
-//        }
+        //zahoor started
+        motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
+        motionManager.startDeviceMotionUpdates(to: .main) { [weak arView] (motion, error) in
+            guard let motion = motion else { return }
+            
+            self.currentTiltPitch = motion.attitude.pitch * (180 / .pi)
+            self.currentTiltRoll = motion.attitude.roll * (180 / .pi)
+            self.currentTiltYaw = motion.attitude.yaw * (180 / .pi)
+                
+            // Check if heading and tilt match
+            if let _selectedHeading = self.selectedHeading
+                , let _selectedTiltPitch = self.selectedTiltPitch
+                , let _selectedTiltRoll = self.selectedTiltRoll
+                , let _currentHeading = self.currentHeading
+                , let _currentTiltPitch = self.currentTiltPitch
+                , let _currentTiltRoll = self.currentTiltRoll{
+                
+                print("currentHeading: \(_currentHeading), selectedHeading:\(_selectedHeading)")
+                print("currentTiltPitch: \(_currentTiltPitch), selectedTiltPitch:\(_selectedTiltPitch)")
+                print("currentTiltRoll: \(_currentTiltRoll), selectedTiltPitch:\(_selectedTiltRoll)")
+                //print("currentTiltYaw: \(_currentTiltYaw), selectedTiltPitch:\(_selectedTiltYaw)")
+                print(abs(_currentHeading - _selectedHeading) <= self.headingTolerance
+                      , abs(_currentTiltPitch - _selectedTiltPitch) <= self.tolerance
+                      , abs(_currentTiltRoll - _selectedTiltRoll) <= self.tolerance
+                )
+                if abs(_currentHeading - _selectedHeading) <= self.headingTolerance
+                   ,(abs(_currentTiltPitch - _selectedTiltPitch) <= self.tolerance ||
+                   abs(_currentTiltRoll - _selectedTiltRoll) <= self.tolerance )
+                {
+                    print("Allah Ho Akbar")
+                    //if arView has already been reset once meaning now rectanlge is drawn at right position
+                    if !self.hasResetOnce{
+                        DispatchQueue.main.async {
+                            self.resetARView()
+                            self.setupARView()
+                            self.setupBorderEntity()
+                            self.showOldPhoto()
+                            self.motionManager.stopDeviceMotionUpdates()
+                        }
+                    }
+                }
+            }
+        }
+        //zahoor finished
         self.setupMapView()
+    }
+    
+    // Function to calculate new position based on heading and tilt
+    func calculateNewPosition(heading: CLLocationDirection, pitch: CGFloat, roll: CGFloat) -> SIMD3<Float> {
+        // Example logic to calculate position (customize as needed)
+        let distance: Float = 1.0  // Example distance in meters
+        let headingRadians = GLKMathDegreesToRadians(Float(heading))
+        
+        let x = distance * cos(headingRadians)
+        let z = distance * sin(headingRadians)
+        let y = Float(tan(pitch)) * distance  // Adjust for tilt pitch
+
+        return SIMD3<Float>(x, y, -z) // ARKit uses a right-handed coordinate system
     }
     
     func setupMultipleMarkers() {
@@ -295,7 +355,7 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
         } else {
             currentMarker.position = currentCoordinate
         }
-        print("current location: \(location)")
+//        print("current location: \(location)")
         let distance = location.distance(from: CLLocation(latitude: selectedLocationLattitde ?? 0, longitude: selectedLocationLongitude ?? 0))
         if distance <= 10 {
             print("Entering viewfinder mode, distance:\(distance)")
@@ -311,9 +371,9 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
         let headingDifference = abs(newHeading.trueHeading - (selectedHeading ?? 0))
         
         if newHeading.headingAccuracy < 0 {
-            currentHeading = newHeading.magneticHeading
+            self.currentHeading = newHeading.magneticHeading
         } else {
-            currentHeading = newHeading.trueHeading
+            self.currentHeading = newHeading.trueHeading
         }
         
 //        currentHeading = newHeading.trueHeading // True North
@@ -327,6 +387,30 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
 
 //MARK: - Other Methods
 extension MapRouteVC {
+    
+    //zahoor started
+    func resetARView() {
+        // Pause the current session
+        self.arView.session.pause()
+        
+        // Remove all anchors
+        self.arView.scene.anchors.removeAll()
+        
+        // Create a new ARWorldTrackingConfiguration
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = [.horizontal, .vertical]
+        
+        // Optional: Reset tracking and remove existing anchors
+        configuration.isCollaborationEnabled = false // Adjust if collaboration is used
+        self.arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        
+        print("ARView reset successfully.")
+        
+        //removing arView from the mapBGView
+        self.arView.removeFromSuperview()
+        hasResetOnce = true
+    }
+    //zahoor finished
     
     func setupARView() {
         arView = ARView(frame: .zero)
@@ -346,8 +430,10 @@ extension MapRouteVC {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         arView.addGestureRecognizer(tapGestureRecognizer)
         
-        setupBorderEntity()
-        showOldPhoto()
+        //zahoor starrted
+//        setupBorderEntity()
+//        showOldPhoto()
+        //zahoor finished
     }
         
     func setupBorderEntity() {
@@ -413,43 +499,8 @@ extension MapRouteVC {
         anchorEntity = AnchorEntity(world: borderPosition)
         anchorEntity.addChild(borderEntity!)
         arView.scene.addAnchor(anchorEntity)
-
-        
-//        print("Borders set with dimensions: \(borderWidth) x \(borderHeight)")
-        //zahoor started
-        //Moving to the direction of the photo
-//        let newPosition = createSIMD3Position(heading: self.selectedHeading ?? 90.0 // Facing East
-//                                              , pitch: self.selectedTiltPitch ?? 10.0  // 10 degrees upward tilt
-//                                              , roll: self.selectedTiltRoll ??  0.0    // No left/right tilt
-////                                              , yaw: self.selectedTiltYaw ?? 90.0    // Aligns with heading
-//                                            )
-//        let newPosition = SIMD3<Float>(0.5, 0, -0.8)
-//        print("newPosition: \(newPosition)")
-//        var transform = anchorEntity.transform
-//        transform.translation = newPosition
-//        // Animate over 2 seconds
-//        anchorEntity.move(to: transform, relativeTo: nil, duration: 2.0, timingFunction: .easeInOut)
+        print("Borders set with dimensions: \(borderWidth) x \(borderHeight)")
     }
-
-    func createSIMD3Position(heading: CLLocationDirection, pitch: Double, roll: Double) -> SIMD3<Float> {
-        // Convert degrees to radians
-        let yawRadians = Float(heading) * .pi / 180.0   // Heading (Yaw)
-        let pitchRadians = Float(pitch) * .pi / 180.0  // Tilt Up/Down
-        let rollRadians = Float(roll) * .pi / 180.0    // Tilt Left/Right
-
-        // Distance to position the point (change as needed)
-        let distance: Float = 1.0
-        
-        // Calculate the 3D position using spherical coordinates
-        let x = distance * cos(pitchRadians) * sin(yawRadians)
-        let y = distance * sin(pitchRadians)
-        let z = -distance * cos(pitchRadians) * cos(yawRadians) // Negative Z is forward
-        
-        print("SIMD3 Position: x: \(x), y: \(y), z: \(z)")
-        return SIMD3<Float>(x, y, z)
-    }
-    
-    //zahoor ended
     
     func showOldPhoto() {
         guard let image = selectedLocationIMG.image else {

@@ -337,7 +337,12 @@ class CapturePhotoVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         //zahoor ended
     }
     
-    func savePhotoData(coordinate: CLLocationCoordinate2D, heading: CLLocationDirection, tilt: (pitch: Double, roll: Double, yaw: Double)) {
+    func savePhotoData(coordinate: CLLocationCoordinate2D
+                       , heading: CLLocationDirection
+                       , tilt: (pitch: Double
+                                , roll: Double
+                                , yaw: Double)
+                        ) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
         //zahoor started
@@ -377,9 +382,9 @@ extension CapturePhotoVC: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
 //        print("magneticHeading: \(newHeading.magneticHeading), trueHeading: \(newHeading.trueHeading), headingAccuracy: \(newHeading.headingAccuracy)")
         if newHeading.headingAccuracy < 0 {
-            currentHeading = newHeading.magneticHeading
+            self.currentHeading = newHeading.magneticHeading
         } else {
-            currentHeading = newHeading.trueHeading
+            self.currentHeading = newHeading.trueHeading
         }
     }
     
