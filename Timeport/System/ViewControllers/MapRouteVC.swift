@@ -67,9 +67,9 @@ class MapRouteVC: UIViewController {
     
     var shouldShowFrame = false
     var anchorEntity = AnchorEntity(world: [0,0,-0.8])
-    let tolerance: CGFloat = 0.5                 // Allowable deviation for pitch and roll
+    let tolerance: CGFloat = 0.05                 // Allowable deviation for pitch and roll
     let headingTolerance: CLLocationDirection = 5.0 // Degrees
-//    var hasResetOnce = false
+    var hasResetOnce = false
     
     //MARK: -  Override Mehods
     override func viewWillAppear(_ animated: Bool) {
@@ -185,6 +185,9 @@ extension MapRouteVC {
         destinationMarker.title = "Timberlake Pharmacy"
         destinationMarker.snippet = "110 E Main St, Charlottesville, VA 22902"
         destinationMarker.map = mapView
+        //zahoor started
+        DeviceOrientation.shared.set(orientation: .landscape)
+        //zahoor finished
     }
     
     func setupLocationAndMotionManager() {
@@ -222,20 +225,19 @@ extension MapRouteVC {
                       , abs(_currentTiltRoll - _selectedTiltRoll) <= self.tolerance
                 )
                 if abs(_currentHeading - _selectedHeading) <= self.headingTolerance
-                   ,(abs(_currentTiltPitch - _selectedTiltPitch) <= self.tolerance ||
-                   abs(_currentTiltRoll - _selectedTiltRoll) <= self.tolerance )
+                   ,(abs(_currentTiltPitch - _selectedTiltPitch) <= self.tolerance
+                     || abs(_currentTiltRoll - _selectedTiltRoll) <= self.tolerance )
                 {
                     print("Allah Ho Akbar")
                     //if arView has already been reset once meaning now rectanlge is drawn at right position
-//                    if !self.hasResetOnce{
+                    if !self.hasResetOnce{
+                        self.motionManager.stopDeviceMotionUpdates()
                         DispatchQueue.main.async {
                             self.resetARView()
-                            self.setupARView()
                             self.setupBorderEntity()
                             self.showOldPhoto()
-                            self.motionManager.stopDeviceMotionUpdates()
                         }
-//                    }
+                    }
                 }
             }
         }
@@ -358,7 +360,7 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
         }
 //        print("current location: \(location)")
         let distance = location.distance(from: CLLocation(latitude: selectedLocationLattitde ?? 0, longitude: selectedLocationLongitude ?? 0))
-        if distance <= 10 {
+        if distance <= 15 {
             print("Entering viewfinder mode, distance:\(distance)")
             enterViewfinderMode()
         } else {
@@ -400,15 +402,11 @@ extension MapRouteVC {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = [.horizontal, .vertical]
         
-        // Optional: Reset tracking and remove existing anchors
-        configuration.isCollaborationEnabled = false // Adjust if collaboration is used
         self.arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
         print("ARView reset successfully.")
         
-        //removing arView from the mapBGView
-        self.arView.removeFromSuperview()
-//        hasResetOnce = true
+        hasResetOnce = true
     }
     //zahoor finished
     
@@ -421,6 +419,7 @@ extension MapRouteVC {
         arView.session.run(config)
         arView.session.delegate = self
         mapBGView.addSubview(arView)
+        
         NSLayoutConstraint.activate([
             arView.topAnchor.constraint(equalTo: view.topAnchor),
             arView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -534,8 +533,11 @@ extension MapRouteVC {
             arView.isHidden = false
             let configuration = ARWorldTrackingConfiguration()
             arView.session.run(configuration)
-            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-            UIViewController.attemptRotationToDeviceOrientation()
+            //zahoor started
+//            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+//            UIViewController.attemptRotationToDeviceOrientation()
+            DeviceOrientation.shared.set(orientation: .landscape)
+            //zahoor ended
             borderEntity?.isEnabled = true
         }
     }
@@ -545,12 +547,15 @@ extension MapRouteVC {
             return
         } else {
             arView.isHidden = true
-            if let mapview = mapView {
-                mapView.isHidden = false
+            if let _mapview = mapView {
+                _mapview.isHidden = false
             }
             arView.session.pause()
-            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-            UIViewController.attemptRotationToDeviceOrientation()
+            //zahoor started
+//            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+//            UIViewController.attemptRotationToDeviceOrientation()
+            DeviceOrientation.shared.set(orientation: .landscape)
+            //zahoor ended
             borderEntity?.isEnabled = false
         }
     }
@@ -576,7 +581,7 @@ extension MapRouteVC {
             let extendedBounds = arView.bounds.insetBy(dx: -margin, dy: -margin)
             return extendedBounds.contains(screenPoint)
         }()
-        print("isFacingCorrectHeading:\(isFacingCorrectDirection)", "isOnScreen:\(isOnScreen)")
+//        print("isFacingCorrectHeading:\(isFacingCorrectDirection)", "isOnScreen:\(isOnScreen)")
         if isFacingCorrectDirection {
             setBorderColorWithFade(isOnScreen ? .green : .red)
         } else {

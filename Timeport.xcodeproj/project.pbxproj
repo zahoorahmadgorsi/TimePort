@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2CC8BB985DE556472BA353A6 /* Pods_Timeport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5147A9D5056B53F83F5EB378 /* Pods_Timeport.framework */; };
+		42B31F6F2D14A203000AB243 /* DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B31F6E2D14A203000AB243 /* DeviceOrientation.swift */; };
 		880EDD1F2CDDE854007C4B2C /* ShowPhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880EDD1E2CDDE854007C4B2C /* ShowPhotoVC.swift */; };
 		880EDD212CDE01F3007C4B2C /* PhotoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880EDD202CDE01F3007C4B2C /* PhotoListVC.swift */; };
 		880EDD242CDE08CC007C4B2C /* PhotoListTblCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880EDD222CDE08CC007C4B2C /* PhotoListTblCell.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		42B31F6E2D14A203000AB243 /* DeviceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientation.swift; sourceTree = "<group>"; };
 		5147A9D5056B53F83F5EB378 /* Pods_Timeport.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Timeport.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EDFA05F0048E2717231EFF7 /* Pods-Timeport.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Timeport.release.xcconfig"; path = "Target Support Files/Pods-Timeport/Pods-Timeport.release.xcconfig"; sourceTree = "<group>"; };
 		880EDD1E2CDDE854007C4B2C /* ShowPhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPhotoVC.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			children = (
 				BCB2A2802C955BFB00039B94 /* Model.swift */,
 				BC8A12B22CE1C90300C592D2 /* Extensions.swift */,
+				42B31F6E2D14A203000AB243 /* DeviceOrientation.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				BC4B4FE02C79B266004CFE32 /* SceneDelegate.swift in Sources */,
 				880EDD242CDE08CC007C4B2C /* PhotoListTblCell.swift in Sources */,
 				BCB2A2812C955BFB00039B94 /* Model.swift in Sources */,
+				42B31F6F2D14A203000AB243 /* DeviceOrientation.swift in Sources */,
 				BCEB4E542CABD43400108D50 /* CapturePhotoVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
