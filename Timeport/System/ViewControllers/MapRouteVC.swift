@@ -358,7 +358,7 @@ extension MapRouteVC: CLLocationManagerDelegate, GMSMapViewDelegate {
         } else {
             currentMarker.position = currentCoordinate
         }
-//        print("current location: \(location)")
+        print("current location: \(location)")
         let distance = location.distance(from: CLLocation(latitude: selectedLocationLattitde ?? 0, longitude: selectedLocationLongitude ?? 0))
         if distance <= 15 {
             print("Entering viewfinder mode, distance:\(distance)")
@@ -430,11 +430,13 @@ extension MapRouteVC {
         arView.addGestureRecognizer(tapGestureRecognizer)
         
         //zahoor starrted
-//        setupBorderEntity()
+        setupBorderEntity()
 //        showOldPhoto()
         //zahoor finished
     }
         
+
+    
     func setupBorderEntity() {
         guard let image = selectedOldPhoto else {
             print("No old photo to set borders")
